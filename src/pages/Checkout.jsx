@@ -99,7 +99,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="container section-sm">
+    <div className={`container section-sm ${order ? '' : 'has-mobile-bar'}`}>
       <h1>Book sample collection</h1>
       {order ? (
         <Alert kind="ok">Booking {order.order.booking_no} placed. Complete the payment to confirm your slot.</Alert>
@@ -220,6 +220,15 @@ export default function Checkout() {
           {!ready && <p className="small muted" style={{ marginTop: 8 }}>Select a person, {mode === 'home' ? 'an address' : 'a centre'} and a slot.</p>}
         </aside>
       </div>
+      )}
+
+      {!order && (
+        <div className="mobile-bar">
+          <div><small>Total</small><strong>{rupees(subtotal + fee)}</strong></div>
+          <button className="btn btn-primary" disabled={!ready || busy} onClick={place}>
+            {busy ? 'Placing…' : payment === 'online' ? 'Book & pay' : 'Confirm booking'}
+          </button>
+        </div>
       )}
 
       {modal === 'patient' && (

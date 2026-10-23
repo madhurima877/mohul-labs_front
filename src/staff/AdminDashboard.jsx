@@ -19,7 +19,9 @@ export default function AdminDashboard() {
         <>
           <div className="grid grid-4">
             <div className="stat-card"><strong>{s.bookings_created_today}</strong><span>Lab bookings created today</span></div>
-            <div className="stat-card"><strong>{rupees(s.revenue_paise_today)}</strong><span>Paid lab revenue today</span></div>
+            {s.revenue_paise_today != null && (
+              <div className="stat-card"><strong>{rupees(s.revenue_paise_today)}</strong><span>Paid lab revenue today (owner only)</span></div>
+            )}
             <div className="stat-card"><strong>{s.pending_reports}</strong><span>Reports waiting to generate</span></div>
             <div className="stat-card"><strong>{(dental.data || []).filter((a) => a.status !== 'cancelled').length}</strong><span>Dental appointments today</span></div>
           </div>

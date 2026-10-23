@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { CheckCircle2, Phone } from 'lucide-react'
 import { api } from '../api'
 import { useAuth } from '../context/AuthContext'
@@ -62,7 +62,9 @@ export default function Login() {
         <div className="card">
           <h2>{sent ? 'Enter OTP' : 'Login or sign up'}</h2>
           <p className="muted small">{sent ? `We sent a 6-digit code to +91 ${phone}.` : 'We will send a one-time password to your mobile.'}</p>
-          <ErrorBox error={error} />
+          {error?.code === 'USE_STAFF_LOGIN' ? (
+            <Alert kind="info">This is a staff number. Please sign in from the <Link to="/staff/login">staff portal</Link>.</Alert>
+          ) : <ErrorBox error={error} />}
           {!sent ? (
             <form className="stack" onSubmit={requestOtp}>
               <Field label="Mobile number">
