@@ -42,7 +42,7 @@ export default function Profile() {
     <div className="container section-sm">
       <h1>Family & addresses</h1>
       <ErrorBox error={error} />
-      <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', marginTop: 16, alignItems: 'start' }}>
+      <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', marginTop: 16, alignItems: 'start' }}>
         <div className="stack" style={{ gap: 18 }}>
           <form className="card stack" onSubmit={saveProfile}>
             <h3>Your profile</h3>

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
-  CalendarCheck, CheckCircle2, ChevronDown, Clock, FlaskConical, LayoutDashboard, LogOut, Mail, Menu,
+  BadgeCheck, CalendarCheck, CheckCircle2, ChevronDown, Clock, FlaskConical, LayoutDashboard, LogOut, Mail, Menu,
   MapPin, Phone, ShoppingCart, Smile, User, Users,
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
+import { watchTables } from './responsiveTables'
 
 export function Logo() {
   return (
@@ -53,7 +54,7 @@ function UserMenu() {
             </>
           )}
           <hr />
-          <button onClick={() => { logout(); navigate('/') }}><LogOut size={16} /> Log out</button>
+          <button onClick={() => { logout(); navigate(isStaff ? '/staff/login' : '/') }}><LogOut size={16} /> Log out</button>
         </div>
       )}
     </div>
@@ -85,6 +86,7 @@ function Navbar() {
               {items.length > 0 && <span className="cart-count">{items.length}</span>}
             </Link>
           )}
+          {!user && <Link to="/staff/login" className="btn btn-outline btn-sm staff-btn"><BadgeCheck size={15} /> Staff</Link>}
           {user ? <UserMenu /> : <Link to="/login" className="btn btn-primary btn-sm">Login</Link>}
           <button className="btn btn-ghost menu-toggle" onClick={() => setOpen((o) => !o)} aria-label="Menu">
             <Menu size={20} />
@@ -125,6 +127,7 @@ function Footer() {
             <Link to="/centres">Find a centre</Link>
             <Link to="/account/bookings">Track booking</Link>
             <Link to="/account/bookings">Download reports</Link>
+            <Link to="/staff/login">Staff portal</Link>
           </div>
         </div>
         <div className="footer-bottom">
@@ -145,6 +148,7 @@ function Toast() {
 export default function Layout() {
   const { pathname } = useLocation()
   useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  useEffect(() => watchTables(), [])
   const staff = pathname.startsWith('/staff')
   return (
     <>

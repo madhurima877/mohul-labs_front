@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CheckCircle2, Microscope, Save } from 'lucide-react'
+import { Ban, CheckCircle2, Lock, Microscope, Save } from 'lucide-react'
 import { api } from '../api'
 import { useFetch } from '../hooks'
 import { Alert, Empty, ErrorBox, Spinner, StatusBadge } from '../components/ui'
@@ -22,39 +22,54 @@ const isAbnormal = (p, v) => {
   return (p.ref_low != null && n < p.ref_low) || (p.ref_high != null && n > p.ref_high)
 }
 
-function PatientSheet({ bookingId, patient, onApproved }) {
-  const [values, setValues] = useState({})
+// Saved values are locked. A wrong one is voided with a reason (kept for audit) and entered again.
+// Once the report is approved nothing on the sheet can change.
+function PatientSheet({ bookingId, patient, onChanged }) {
+  const [values, setValues] = useState({}) // typed values for parameters that have no saved value yet
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
   const [msg, setMsg] = useState('')
 
-  useEffect(() => {
-    const v = {}
-    patient.tests.forEach((t) => t.parameters.forEach((p) => { v[p.id] = p.value ?? '' }))
-    setValues(v)
-  }, [patient])
+  useEffect(() => { setValues({}) }, [patient])
 
   const params = patient.tests.flatMap((t) => t.parameters)
-  const missing = params.filter((p) => !String(values[p.id] ?? '').trim()).length
+  const saved = (p) => p.value != null
+  const typed = (p) => String(values[p.id] ?? '').trim()
+  const missing = params.filter((p) => !saved(p) && !typed(p)).length
+  const unsavedCount = params.filter((p) => !saved(p) && typed(p)).length
+  const base = `/lab/bookings/${bookingId}/patients/${patient.patient_id}`
 
-  const save = async () => {
-    const results = params.filter((p) => String(values[p.id] ?? '').trim()).map((p) => ({ parameter_id: p.id, value: String(values[p.id]).trim() }))
-    if (!results.length) return null
-    return api.post(`/lab/bookings/${bookingId}/patients/${patient.patient_id}/results`, { results })
-  }
   const run = async (approve) => {
     setBusy(true)
     setError(null)
     setMsg('')
     try {
-      await save()
+      const results = params.filter((p) => !saved(p) && typed(p)).map((p) => ({ parameter_id: p.id, value: typed(p) }))
+      if (results.length) await api.post(`${base}/results`, { results })
       if (approve) {
-        await api.post(`/lab/bookings/${bookingId}/patients/${patient.patient_id}/approve`)
-        setMsg('Approved — the report is being generated.')
-        onApproved()
+        await api.post(`${base}/approve`)
+        setMsg('Approved — results are now final and the report is being generated.')
       } else {
-        setMsg('Results saved.')
+        setMsg(results.length ? `${results.length} value(s) saved and locked.` : 'Nothing new to save.')
       }
+      onChanged()
+    } catch (err) {
+      setError(err)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const voidValue = async (p) => {
+    const reason = window.prompt(`Void "${p.value}" for ${p.name}?\nThe old value is kept for audit. Reason (required):`, '')
+    if (reason === null) return
+    setBusy(true)
+    setError(null)
+    setMsg('')
+    try {
+      await api.post(`${base}/results/${p.id}/void`, { reason })
+      setMsg(`${p.name} voided — enter the corrected value.`)
+      onChanged()
     } catch (err) {
       setError(err)
     } finally {
@@ -63,10 +78,12 @@ function PatientSheet({ bookingId, patient, onApproved }) {
   }
 
   return (
-    <div className="card">
+    <div className="card" style={patient.approved ? { borderLeft: '4px solid var(--ok)' } : undefined}>
       <div className="row-between">
         <h3 style={{ margin: 0 }}>{patient.patient_name}</h3>
-        <span className="small muted">{params.length - missing}/{params.length} values entered</span>
+        {patient.approved
+          ? <span className="badge badge-ok"><Lock size={12} /> Approved — final</span>
+          : <span className="small muted">{params.length - missing}/{params.length} values entered</span>}
       </div>
       <div className="stack" style={{ marginTop: 12 }}>
         {patient.tests.map((t) => (
@@ -74,17 +91,38 @@ function PatientSheet({ bookingId, patient, onApproved }) {
             <div className="small" style={{ fontWeight: 700, color: 'var(--blue-700)', marginBottom: 6 }}>{t.name}</div>
             <div className="table-wrap">
               <table className="table">
-                <thead><tr><th>Parameter</th><th style={{ width: 160 }}>Result</th><th>Unit</th><th>Reference</th><th></th></tr></thead>
+                <thead><tr><th>Parameter</th><th style={{ width: 170 }}>Result</th><th>Unit</th><th>Reference</th><th></th></tr></thead>
                 <tbody>
                   {t.parameters.map((p) => {
-                    const bad = isAbnormal(p, values[p.id])
+                    const shown = saved(p) ? p.value : values[p.id]
+                    const bad = saved(p) ? Boolean(p.is_abnormal) : isAbnormal(p, values[p.id])
                     return (
                       <tr key={p.id}>
                         <td>{p.name}</td>
-                        <td><input className="input" value={values[p.id] ?? ''} onChange={(e) => setValues({ ...values, [p.id]: e.target.value })} style={bad ? { borderColor: 'var(--bad)', color: 'var(--bad)', fontWeight: 700 } : undefined} /></td>
+                        <td>
+                          {saved(p) ? (
+                            <span className="row" style={{ gap: 6, flexWrap: 'nowrap' }}>
+                              <Lock size={13} color="var(--muted)" />
+                              <strong className={bad ? 'abnormal' : undefined}>{shown}</strong>
+                            </span>
+                          ) : (
+                            <input className="input" value={shown ?? ''} disabled={patient.approved}
+                              onChange={(e) => setValues({ ...values, [p.id]: e.target.value })}
+                              style={bad ? { borderColor: 'var(--bad)', color: 'var(--bad)', fontWeight: 700 } : undefined} />
+                          )}
+                        </td>
                         <td className="small">{p.unit || '—'}</td>
                         <td className="small muted">{range(p)}</td>
-                        <td>{bad && <span className="badge badge-bad">Abnormal</span>}</td>
+                        <td>
+                          <div className="row" style={{ gap: 6, flexWrap: 'nowrap' }}>
+                            {bad && <span className="badge badge-bad">Abnormal</span>}
+                            {saved(p) && !patient.approved && (
+                              <button className="btn btn-ghost btn-sm" disabled={busy} onClick={() => voidValue(p)} title="Void this value and re-enter">
+                                <Ban size={14} /> Void
+                              </button>
+                            )}
+                          </div>
+                        </td>
                       </tr>
                     )
                   })}
@@ -95,12 +133,17 @@ function PatientSheet({ bookingId, patient, onApproved }) {
         ))}
       </div>
       <div style={{ marginTop: 12 }}><ErrorBox error={error} />{msg && <Alert kind="ok">{msg}</Alert>}</div>
-      <div className="row" style={{ justifyContent: 'flex-end', marginTop: 12 }}>
-        <button className="btn btn-outline" disabled={busy} onClick={() => run(false)}><Save size={16} /> Save draft</button>
-        <button className="btn btn-primary" disabled={busy || missing > 0} onClick={() => run(true)} title={missing ? 'Enter every value first' : ''}>
-          <CheckCircle2 size={16} /> Save & approve report
-        </button>
-      </div>
+      {!patient.approved && (
+        <>
+          <p className="small muted" style={{ marginTop: 10 }}>Saved values are locked. To correct one, use <strong>Void</strong> with a reason and enter it again.</p>
+          <div className="row" style={{ justifyContent: 'flex-end' }}>
+            <button className="btn btn-outline" disabled={busy || unsavedCount === 0} onClick={() => run(false)}><Save size={16} /> Save values</button>
+            <button className="btn btn-primary" disabled={busy || missing > 0} onClick={() => run(true)} title={missing ? 'Enter every value first' : ''}>
+              <CheckCircle2 size={16} /> Save & approve report
+            </button>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -136,7 +179,7 @@ export default function Results() {
       )}
       {selected && (sheet.loading ? <Spinner /> : sheet.error ? <ErrorBox error={sheet.error} /> : (
         <div className="stack" style={{ gap: 18 }}>
-          {(sheet.data || []).map((p) => <PatientSheet key={p.patient_id} bookingId={selected} patient={p} onApproved={reloadAll} />)}
+          {(sheet.data || []).map((p) => <PatientSheet key={p.patient_id} bookingId={selected} patient={p} onChanged={reloadAll} />)}
         </div>
       ))}
     </div>

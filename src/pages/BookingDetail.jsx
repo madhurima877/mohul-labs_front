@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import { Building2, CalendarDays, CheckCircle2, Download, FileText, Home as HomeIcon, Lock, TestTube } from 'lucide-react'
+import { Building2, CalendarDays, CheckCircle2, Clock, Download, FileText, Home as HomeIcon, Lock, Send, TestTube } from 'lucide-react'
 import { api } from '../api'
 import { useFetch } from '../hooks'
 import { useAuth } from '../context/AuthContext'
-import { Alert, ErrorBox, Modal, Spinner, StatusBadge } from '../components/ui'
+import { Alert, ErrorBox, Field, Modal, Spinner, StatusBadge } from '../components/ui'
+import { DeliveryNote } from '../staff/FrontDesk'
 import { BOOKING_STEPS, fmtDate, fmtDateTime, fmtTime, rupees, SAMPLE_LABELS, titleCase } from '../utils'
 
 function Timeline({ booking }) {
@@ -24,6 +25,48 @@ function Timeline({ booking }) {
         )
       })}
     </ul>
+  )
+}
+
+// ReportDelivery shows staff how this customer gets the report and lets them send it again, or to an
+// email the customer gives at the counter.
+function ReportDelivery({ booking, onSent }) {
+  const ways = booking.report_delivery || []
+  const [email, setEmail] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [msg, setMsg] = useState('')
+  const [error, setError] = useState(null)
+  const send = async () => {
+    setBusy(true)
+    setError(null)
+    setMsg('')
+    try {
+      await api.post(`/bookings/${booking.id}/send-report`, { email })
+      setMsg('Report is being sent.')
+      setTimeout(onSent, 2000)
+    } catch (err) {
+      setError(err)
+    } finally {
+      setBusy(false)
+    }
+  }
+  return (
+    <div className="card stack">
+      <h3 style={{ margin: 0 }}>Report delivery</h3>
+      <div className="small"><DeliveryNote ways={ways} /></div>
+      {booking.status === 'report_ready' && (
+        <>
+          <Field label={ways.includes('email') ? 'Send to a different email (optional)' : 'Add an email to send it (optional)'}>
+            <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" />
+          </Field>
+          <ErrorBox error={error} />
+          {msg && <Alert kind="ok">{msg}</Alert>}
+          <button className="btn btn-teal" disabled={busy || (ways.length === 0 && !email.trim())} onClick={send}>
+            <Send size={15} /> {ways.length || email.trim() ? 'Send report' : 'No phone or email — hand over a printout'}
+          </button>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -99,7 +142,16 @@ export default function BookingDetail() {
               <h3><FileText size={18} /> Reports</h3>
               {reports.data.map((r) => (
                 <div key={r.id} className="list-row">
-                  <div><strong>{r.patient_name}</strong><div className="small muted">{r.status === 'ready' ? `Ready · ${fmtDateTime(r.generated_at)}` : 'Being prepared…'}</div></div>
+                  <div>
+                    <strong>{r.patient_name}</strong>
+                    <div className="small muted">{r.status === 'ready' ? `Ready · ${fmtDateTime(r.generated_at)}` : 'Being prepared…'}</div>
+                    {(r.delivered_sms_at || r.delivered_email_at) && (
+                      <div className="small muted">
+                        Sent{r.delivered_sms_at ? ` by SMS ${fmtDateTime(r.delivered_sms_at)}` : ''}{r.delivered_sms_at && r.delivered_email_at ? ',' : ''}
+                        {r.delivered_email_at ? ` by email ${fmtDateTime(r.delivered_email_at)}` : ''}
+                      </div>
+                    )}
+                  </div>
                   {r.status === 'ready'
                     ? <button className="btn btn-teal btn-sm" onClick={() => act(() => api.openReport(r.id))}><Download size={15} /> View report</button>
                     : <StatusBadge status={r.status} />}
@@ -173,8 +225,17 @@ export default function BookingDetail() {
             <h3>Status</h3>
             <Timeline booking={b} />
             {b.status === 'report_ready' && <p className="row small" style={{ color: 'var(--ok)', fontWeight: 650 }}><CheckCircle2 size={16} /> All reports are ready.</p>}
+            {b.report_expected_at && !['report_ready', 'cancelled'].includes(b.status) && (
+              <p className="row small" style={{ gap: 6 }}><Clock size={15} /> Report expected by <strong>{fmtDateTime(b.report_expected_at)}</strong></p>
+            )}
           </div>
-          {canCancel && <button className="btn btn-danger" disabled={busy} onClick={cancel}>Cancel booking</button>}
+          {!isCustomer && <ReportDelivery booking={b} onSent={() => reports.reload()} />}
+          {canCancel && (
+            <div className="stack" style={{ gap: 6 }}>
+              <button className="btn btn-danger" disabled={busy} onClick={cancel}>Cancel booking</button>
+              <p className="small muted" style={{ margin: 0 }}>Booked tests can't be changed. To add or remove tests, cancel this booking and book again.</p>
+            </div>
+          )}
         </aside>
       </div>
 

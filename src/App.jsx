@@ -17,6 +17,7 @@ import BookingDetail from './pages/BookingDetail'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import StaffApp from './staff/StaffApp'
+import StaffLogin from './pages/StaffLogin'
 
 export default function App() {
   return (
@@ -36,7 +37,8 @@ export default function App() {
         <Route path="account/bookings" element={<RequireAuth roles={['customer']}><MyBookings /></RequireAuth>} />
         <Route path="account/bookings/:id" element={<RequireAuth><BookingDetail /></RequireAuth>} />
         <Route path="account/profile" element={<RequireAuth roles={['customer']}><Profile /></RequireAuth>} />
-        <Route path="staff/*" element={<RequireAuth roles={['admin', 'phlebotomist', 'lab_technician']}><StaffApp /></RequireAuth>} />
+        <Route path="staff/login" element={<StaffLogin />} />
+        <Route path="staff/*" element={<RequireAuth roles={['master', 'owner', 'admin', 'phlebotomist', 'lab_technician']}><StaffApp /></RequireAuth>} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
