@@ -58,7 +58,7 @@ export default function Profile() {
             {addresses.loading ? <Spinner /> : (addresses.data || []).length === 0 ? <p className="muted small">No saved addresses.</p> : addresses.data.map((a) => (
               <div key={a.id} className="list-row">
                 <div className="row" style={{ flexWrap: 'nowrap', alignItems: 'start' }}>
-                  <MapPin size={18} color="var(--teal-600)" style={{ marginTop: 3 }} />
+                  <MapPin size={18} color="var(--brand-600)" style={{ marginTop: 3 }} />
                   <div><strong>{a.line1}</strong><div className="small muted">{[a.line2, a.city, a.pincode].filter(Boolean).join(', ')}</div></div>
                 </div>
                 <button className="btn btn-ghost btn-sm" onClick={() => remove(`/addresses/${a.id}`, addresses.reload, 'this address')} aria-label="Delete address"><Trash2 size={16} /></button>

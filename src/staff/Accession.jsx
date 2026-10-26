@@ -50,7 +50,7 @@ export default function Accession() {
       <div><h2>Sample accession</h2><p className="muted" style={{ margin: 0 }}>Receive tubes arriving at the lab, or reject unusable ones.</p></div>
 
       <form className="card row" onSubmit={(e) => { e.preventDefault(); if (barcode.trim()) receive(barcode) }}>
-        <ScanBarcode size={22} color="var(--teal-600)" />
+        <ScanBarcode size={22} color="var(--brand-600)" />
         <input className="input" style={{ maxWidth: 280 }} value={barcode} onChange={(e) => setBarcode(e.target.value.toUpperCase())} placeholder="Scan or type barcode (SMP…)" autoFocus />
         <button className="btn btn-primary">Receive</button>
       </form>
@@ -72,7 +72,7 @@ export default function Accession() {
                     <td><Link to={`/account/bookings/${s.booking_id}`} className="small">View</Link></td>
                     <td>
                       <div className="row" style={{ gap: 6, flexWrap: 'nowrap' }}>
-                        <button className="btn btn-teal btn-sm" onClick={() => receive(s.barcode)}>Receive</button>
+                        <button className="btn btn-brand btn-sm" onClick={() => receive(s.barcode)}>Receive</button>
                         <button className="btn btn-danger btn-sm" onClick={() => setRejecting(s)}>Reject</button>
                       </div>
                     </td>

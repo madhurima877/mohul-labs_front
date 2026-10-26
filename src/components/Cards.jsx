@@ -7,7 +7,7 @@ function CartButton({ item }) {
   const { has, toggle } = useCart()
   const inCart = has(item.code)
   return (
-    <button className={`btn btn-sm ${inCart ? 'btn-outline' : 'btn-teal'}`} onClick={() => toggle(item)}>
+    <button className={`btn btn-sm ${inCart ? 'btn-outline' : 'btn-brand'}`} onClick={() => toggle(item)}>
       {inCart ? <><Check size={15} /> Added</> : <><Plus size={15} /> Add</>}
     </button>
   )
@@ -36,9 +36,9 @@ export function PackageCard({ pkg, featured }) {
   const tests = pkg.tests || []
   const params = tests.length
   return (
-    <div className="card card-hover stack" style={{ gap: 0, borderTop: featured ? '4px solid var(--teal-500)' : undefined }}>
+    <div className="card card-hover stack" style={{ gap: 0, borderTop: featured ? '4px solid var(--brand-500)' : undefined }}>
       <div className="row-between">
-        <span className="badge badge-blue">{params} tests included</span>
+        <span className="badge badge-accent">{params} tests included</span>
         {featured && <span className="badge">Most booked</span>}
       </div>
       <h3 style={{ marginTop: 12 }}><Link to={`/packages/${pkg.code}`} style={{ color: 'inherit' }}>{pkg.name}</Link></h3>

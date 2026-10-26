@@ -37,9 +37,9 @@ export default function TestDetail() {
             <div className="card">
               <h3>Test details</h3>
               <div className="grid grid-3" style={{ marginTop: 12 }}>
-                <div className="feature"><span className="icon-bubble blue"><Droplet size={20} /></span><div><h3>Sample</h3><p>{SAMPLE_LABELS[t.sample_type]}</p></div></div>
+                <div className="feature"><span className="icon-bubble accent"><Droplet size={20} /></span><div><h3>Sample</h3><p>{SAMPLE_LABELS[t.sample_type]}</p></div></div>
                 <div className="feature"><span className="icon-bubble"><Clock size={20} /></span><div><h3>Report time</h3><p>Within {t.tat_hours} hours</p></div></div>
-                <div className="feature"><span className="icon-bubble blue"><Utensils size={20} /></span><div><h3>Preparation</h3><p>{t.fasting_required ? '10–12 hours fasting (water is fine)' : 'No fasting needed'}</p></div></div>
+                <div className="feature"><span className="icon-bubble accent"><Utensils size={20} /></span><div><h3>Preparation</h3><p>{t.fasting_required ? '10–12 hours fasting (water is fine)' : 'No fasting needed'}</p></div></div>
               </div>
             </div>
             <div className="card">
@@ -63,9 +63,9 @@ export default function TestDetail() {
             <button className={`btn btn-block ${inCart ? 'btn-outline' : 'btn-primary'}`} onClick={() => toggle({ type: 'test', code: t.code, name: t.name, price: t.price_paise })}>
               {inCart ? <><Check size={16} /> In cart — remove</> : <><Plus size={16} /> Add to cart</>}
             </button>
-            {inCart && <Link to="/cart" className="btn btn-teal btn-block" style={{ marginTop: 8 }}>Go to cart</Link>}
+            {inCart && <Link to="/cart" className="btn btn-brand btn-block" style={{ marginTop: 8 }}>Go to cart</Link>}
             <div className="divider" />
-            <p className="row small"><Home size={16} color="var(--teal-600)" /> Free home collection on orders of {rupees(100000)}+</p>
+            <p className="row small"><Home size={16} color="var(--brand-600)" /> Free home collection on orders of {rupees(100000)}+</p>
           </aside>
         </div>
       </section>

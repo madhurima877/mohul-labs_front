@@ -115,7 +115,7 @@ export default function StaffAccounts() {
                   <tr key={s.id} style={s.is_active ? undefined : { opacity: 0.6 }}>
                     <td><strong>{s.name}</strong>{s.phone && <div className="small muted">{s.phone}</div>}</td>
                     <td className="small">{s.email}</td>
-                    <td>{s.role === 'master' ? <span className="badge badge-blue"><ShieldCheck size={12} /> Master</span>
+                    <td>{s.role === 'master' ? <span className="badge badge-accent"><ShieldCheck size={12} /> Master</span>
                       : s.role === 'owner' ? <span className="badge"><ShieldCheck size={12} /> Owner</span> : titleCase(s.role)}</td>
                     <td><span className={`badge ${s.is_active ? 'badge-ok' : 'badge-grey'}`}>{s.is_active ? 'Active' : 'Deactivated'}</span></td>
                     <td className="small muted">{s.last_login_at ? fmtDateTime(s.last_login_at) : 'Never'}</td>

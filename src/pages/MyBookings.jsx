@@ -35,7 +35,7 @@ function LabBookings() {
           {list.map((b) => (
             <Link key={b.id} to={`/account/bookings/${b.id}`} className="card card-hover row-between" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="row">
-                <span className="icon-bubble blue"><FlaskConical size={20} /></span>
+                <span className="icon-bubble accent"><FlaskConical size={20} /></span>
                 <div>
                   <strong>{b.booking_no}</strong>
                   <div className="meta-list" style={{ margin: '4px 0 0' }}>
@@ -95,7 +95,7 @@ function DentalAppointments() {
               </div>
               <p className="small">For <strong>{a.patient_name}</strong> · Fee {rupees(a.price_paise)} (pay at clinic)</p>
               {a.notes && <p className="small muted">Your note: {a.notes}</p>}
-              {a.dentist_notes && <p className="small" style={{ background: 'var(--teal-50)', padding: 10, borderRadius: 8 }}><strong>Dentist's notes:</strong> {a.dentist_notes}</p>}
+              {a.dentist_notes && <p className="small" style={{ background: 'var(--brand-50)', padding: 10, borderRadius: 8 }}><strong>Dentist's notes:</strong> {a.dentist_notes}</p>}
               {a.status === 'cancelled' && a.cancel_reason && <p className="small muted">{titleCase(a.status)}: {a.cancel_reason}</p>}
               {a.status === 'booked' && <button className="btn btn-danger btn-sm" onClick={() => cancel(a)}>Cancel appointment</button>}
             </div>

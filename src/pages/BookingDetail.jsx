@@ -61,7 +61,7 @@ function ReportDelivery({ booking, onSent }) {
           </Field>
           <ErrorBox error={error} />
           {msg && <Alert kind="ok">{msg}</Alert>}
-          <button className="btn btn-teal" disabled={busy || (ways.length === 0 && !email.trim())} onClick={send}>
+          <button className="btn btn-brand" disabled={busy || (ways.length === 0 && !email.trim())} onClick={send}>
             <Send size={15} /> {ways.length || email.trim() ? 'Send report' : 'No phone or email — hand over a printout'}
           </button>
         </>
@@ -153,7 +153,7 @@ export default function BookingDetail() {
                     )}
                   </div>
                   {r.status === 'ready'
-                    ? <button className="btn btn-teal btn-sm" onClick={() => act(() => api.openReport(r.id))}><Download size={15} /> View report</button>
+                    ? <button className="btn btn-brand btn-sm" onClick={() => act(() => api.openReport(r.id))}><Download size={15} /> View report</button>
                     : <StatusBadge status={r.status} />}
                 </div>
               ))}
@@ -164,10 +164,10 @@ export default function BookingDetail() {
             <h3>Tests booked</h3>
             {Object.entries(byPatient).map(([pid, items]) => (
               <div key={pid} style={{ marginTop: 12 }}>
-                <div className="small" style={{ fontWeight: 700, color: 'var(--teal-700)' }}>{names[pid] || 'Patient'}</div>
+                <div className="small" style={{ fontWeight: 700, color: 'var(--brand-700)' }}>{names[pid] || 'Patient'}</div>
                 {items.map((it) => (
                   <div key={it.id} className="summary-line">
-                    <span>{it.name} {it.item_type === 'package' && <span className="badge badge-blue">Package</span>}</span>
+                    <span>{it.name} {it.item_type === 'package' && <span className="badge badge-accent">Package</span>}</span>
                     <span>{rupees(it.price_paise)}</span>
                   </div>
                 ))}

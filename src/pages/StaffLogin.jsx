@@ -43,7 +43,7 @@ export default function StaffLogin() {
 
   return (
     <div className="auth-wrap">
-      <div className="auth-art" style={{ background: 'linear-gradient(135deg, #0b3d42 0%, #0d6b6f 55%, #1a5a8e 100%)' }}>
+      <div className="auth-art" style={{ background: 'linear-gradient(135deg, #2e1a47 0%, #5b2a86 55%, #1d7246 100%)' }}>
         <span className="badge" style={{ alignSelf: 'start', background: 'rgba(255,255,255,.15)', color: '#fff' }}>Staff only</span>
         <h2 style={{ marginTop: 12 }}>Mohul Labs staff portal</h2>
         <p>Front desk, sample collection, lab results and the dental desk.</p>

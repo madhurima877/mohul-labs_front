@@ -14,7 +14,7 @@ export function Logo() {
       <span className="brand-mark">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M12 3c-3 4-5.5 7-5.5 10.5a5.5 5.5 0 0 0 11 0C17.5 10 15 7 12 3z" fill="#fff" />
-          <path d="M9.5 14h5M12 11.5v5" stroke="#14a39a" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M9.5 14h5M12 11.5v5" stroke="#6d35a3" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       </span>
       <span>

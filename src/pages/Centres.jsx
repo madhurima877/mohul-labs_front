@@ -55,7 +55,7 @@ export default function Centres() {
               {(labs.data || []).map((l) => (
                 <div key={l.id} className="card card-hover">
                   <div className="row-between">
-                    <span className="icon-bubble blue"><Building2 size={22} /></span>
+                    <span className="icon-bubble accent"><Building2 size={22} /></span>
                     {l.has_dental && <span className="badge"><Smile size={12} /> Dental clinic</span>}
                   </div>
                   <h3 style={{ marginTop: 12 }}>{l.name}</h3>
@@ -63,7 +63,7 @@ export default function Centres() {
                   <p className="row small muted"><Phone size={15} /> {l.phone}</p>
                   <div className="row">
                     <Link to="/tests" className="btn btn-outline btn-sm">Book a test</Link>
-                    {l.has_dental && <Link to="/dental/book" className="btn btn-teal btn-sm">Book dentist</Link>}
+                    {l.has_dental && <Link to="/dental/book" className="btn btn-brand btn-sm">Book dentist</Link>}
                   </div>
                 </div>
               ))}

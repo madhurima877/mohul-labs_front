@@ -69,7 +69,7 @@ export default function Login() {
             <form className="stack" onSubmit={requestOtp}>
               <Field label="Mobile number">
                 <div className="row" style={{ flexWrap: 'nowrap', gap: 8 }}>
-                  <span className="input" style={{ width: 64, textAlign: 'center', background: 'var(--teal-50)' }}>+91</span>
+                  <span className="input" style={{ width: 64, textAlign: 'center', background: 'var(--brand-50)' }}>+91</span>
                   <input className="input" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} inputMode="numeric" placeholder="98765 43210" autoFocus required />
                 </div>
               </Field>
