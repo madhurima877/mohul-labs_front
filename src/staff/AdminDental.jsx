@@ -5,7 +5,7 @@ import { Empty, ErrorBox, Field, Modal, Spinner, StatusBadge } from '../componen
 import { fmtDate, fmtTime, isoDate, rupees } from '../utils'
 
 const NEXT = {
-  booked: [['checked_in', 'Check in', 'btn-teal'], ['no_show', 'No-show', 'btn-ghost'], ['cancelled', 'Cancel', 'btn-danger']],
+  booked: [['checked_in', 'Check in', 'btn-brand'], ['no_show', 'No-show', 'btn-ghost'], ['cancelled', 'Cancel', 'btn-danger']],
   checked_in: [['completed', 'Complete visit', 'btn-primary']],
 }
 
@@ -53,7 +53,7 @@ export default function AdminDental() {
                   <td>{a.patient_name}</td>
                   <td>{a.service_name}<div className="small muted">{rupees(a.price_paise)}</div></td>
                   <td>{a.dentist_name}<div className="small muted">{a.lab_name}</div></td>
-                  <td className="small" style={{ maxWidth: 220 }}>{a.notes || '—'}{a.dentist_notes && <div style={{ color: 'var(--teal-700)' }}>Rx: {a.dentist_notes}</div>}</td>
+                  <td className="small" style={{ maxWidth: 220 }}>{a.notes || '—'}{a.dentist_notes && <div style={{ color: 'var(--brand-700)' }}>Rx: {a.dentist_notes}</div>}</td>
                   <td><StatusBadge status={a.status} /></td>
                   <td>
                     <div className="row" style={{ gap: 6, flexWrap: 'nowrap' }}>

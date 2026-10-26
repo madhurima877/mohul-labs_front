@@ -88,7 +88,7 @@ function PatientSheet({ bookingId, patient, onChanged }) {
       <div className="stack" style={{ marginTop: 12 }}>
         {patient.tests.map((t) => (
           <div key={t.test_id}>
-            <div className="small" style={{ fontWeight: 700, color: 'var(--blue-700)', marginBottom: 6 }}>{t.name}</div>
+            <div className="small" style={{ fontWeight: 700, color: 'var(--accent-700)', marginBottom: 6 }}>{t.name}</div>
             <div className="table-wrap">
               <table className="table">
                 <thead><tr><th>Parameter</th><th style={{ width: 170 }}>Result</th><th>Unit</th><th>Reference</th><th></th></tr></thead>

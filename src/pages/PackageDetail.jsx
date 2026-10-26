@@ -46,7 +46,7 @@ export default function PackageDetail() {
                 </tbody>
               </table>
             </div>
-            {fasting && <p className="row small" style={{ marginTop: 12 }}><Utensils size={16} color="var(--teal-600)" /> Needs 10–12 hours fasting — book an early-morning slot.</p>}
+            {fasting && <p className="row small" style={{ marginTop: 12 }}><Utensils size={16} color="var(--brand-600)" /> Needs 10–12 hours fasting — book an early-morning slot.</p>}
           </div>
           <aside className="card sticky">
             <span className="price" style={{ fontSize: '1.6rem' }}>{rupees(p.price_paise)}</span>
@@ -58,7 +58,7 @@ export default function PackageDetail() {
             <button className={`btn btn-block ${inCart ? 'btn-outline' : 'btn-primary'}`} onClick={() => toggle({ type: 'package', code: p.code, name: p.name, price: p.price_paise, includes: tests.map((t) => t.code) })}>
               {inCart ? <><Check size={16} /> In cart — remove</> : <><Plus size={16} /> Add to cart</>}
             </button>
-            {inCart && <Link to="/cart" className="btn btn-teal btn-block" style={{ marginTop: 8 }}>Go to cart</Link>}
+            {inCart && <Link to="/cart" className="btn btn-brand btn-block" style={{ marginTop: 8 }}>Go to cart</Link>}
           </aside>
         </div>
       </section>

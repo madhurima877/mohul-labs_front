@@ -58,7 +58,7 @@ export default function Dental() {
                   <div className="meta-list"><span><Clock size={14} /> About {s.duration_min} min</span></div>
                   <div className="row-between" style={{ marginTop: 'auto' }}>
                     <span className="price">{rupees(s.price_paise)}</span>
-                    <Link to={`/dental/book?service=${s.code}`} className="btn btn-teal btn-sm">Book</Link>
+                    <Link to={`/dental/book?service=${s.code}`} className="btn btn-brand btn-sm">Book</Link>
                   </div>
                 </div>
               ))}
@@ -79,7 +79,7 @@ export default function Dental() {
                   </div>
                   <div style={{ flex: 1 }}>
                     <h3 style={{ marginBottom: 2 }}>{d.name}</h3>
-                    <div className="small" style={{ color: 'var(--teal-700)', fontWeight: 650 }}>{d.qualification}</div>
+                    <div className="small" style={{ color: 'var(--brand-700)', fontWeight: 650 }}>{d.qualification}</div>
                     <p className="small muted" style={{ margin: '6px 0' }}>{d.bio}</p>
                     <div className="meta-list" style={{ margin: '6px 0 12px' }}>
                       <span><Award size={14} /> {d.experience_years} yrs</span>

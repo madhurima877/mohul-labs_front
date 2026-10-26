@@ -47,7 +47,7 @@ export function CollectCard({ bookingId, onDone }) {
       </div>
       {b.address && (
         <p className="row small" style={{ marginTop: 10, alignItems: 'start', flexWrap: 'nowrap' }}>
-          <MapPin size={16} color="var(--teal-600)" style={{ flexShrink: 0, marginTop: 2 }} />
+          <MapPin size={16} color="var(--brand-600)" style={{ flexShrink: 0, marginTop: 2 }} />
           {[b.address.line1, b.address.line2, b.address.landmark, b.address.city, b.address.pincode].filter(Boolean).join(', ')}
         </p>
       )}
@@ -67,7 +67,7 @@ export function CollectCard({ bookingId, onDone }) {
         <div className="row-between" style={{ marginTop: 6 }}>
           {cashDue ? (
             <label className="row small" style={{ gap: 6 }}>
-              <input type="checkbox" checked={cash} onChange={(e) => setCash(e.target.checked)} style={{ accentColor: 'var(--teal-600)' }} />
+              <input type="checkbox" checked={cash} onChange={(e) => setCash(e.target.checked)} style={{ accentColor: 'var(--brand-600)' }} />
               Collected {rupees(b.total_paise)} from customer
             </label>
           ) : onlineDue ? <span className="small" style={{ color: 'var(--warn)' }}>Online payment not completed yet</span>

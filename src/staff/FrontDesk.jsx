@@ -73,7 +73,7 @@ function ItemPicker({ catalog, items, onChange }) {
       {items.length > 0 && (
         <div className="row" style={{ gap: 6 }}>
           {items.map((i) => (
-            <span key={i.code} className={`badge ${i.type === 'package' ? 'badge-blue' : ''}`} style={{ padding: '6px 10px', fontSize: '.8rem' }}>
+            <span key={i.code} className={`badge ${i.type === 'package' ? 'badge-accent' : ''}`} style={{ padding: '6px 10px', fontSize: '.8rem' }}>
               {i.name} · {rupees(i.price)} · {i.tat}h
               <button type="button" onClick={() => onChange(items.filter((x) => x.code !== i.code))} aria-label={`Remove ${i.name}`}
                 style={{ border: 0, background: 'none', cursor: 'pointer', padding: 0, color: 'inherit', display: 'flex' }}><X size={13} /></button>
@@ -90,7 +90,7 @@ function PersonCard({ index, person, family, catalog, onChange, onRemove, withTe
   const existing = family.find((p) => p.id === person.patientId)
   const subtotal = person.items.reduce((s, i) => s + i.price, 0)
   return (
-    <div className="card" style={{ borderLeft: '4px solid var(--teal-500)' }}>
+    <div className="card" style={{ borderLeft: '4px solid var(--brand-500)' }}>
       <div className="row-between">
         <h3 style={{ margin: 0 }}><UserRound size={18} /> {title || `Person ${index + 1}`}</h3>
         {onRemove && <button type="button" className="btn btn-ghost btn-sm" onClick={onRemove}><Trash2 size={15} /> Remove</button>}
@@ -208,7 +208,7 @@ function DentalWalkIn({ lab, family, value, onChange, customerName }) {
           <textarea className="input" value={value.notes} onChange={set('notes')} maxLength={500} placeholder="e.g. Swelling near upper right tooth since yesterday" />
         </Field>
         <label className="row" style={{ gap: 8 }}>
-          <input type="checkbox" checked={value.checkIn} onChange={set('checkIn')} style={{ accentColor: 'var(--teal-600)', width: 18, height: 18 }} />
+          <input type="checkbox" checked={value.checkIn} onChange={set('checkIn')} style={{ accentColor: 'var(--brand-600)', width: 18, height: 18 }} />
           Patient is here — check them in now
         </label>
         {service && <div className="summary-total" style={{ marginTop: 0 }}><span>Fee (pay at clinic after the visit)</span><span>{rupees(service.price_paise)}</span></div>}
@@ -471,7 +471,7 @@ export default function FrontDesk() {
             <Plus size={15} /> Add phone or email to get the report directly
           </button>
         ) : (
-          <div className="stack" style={{ padding: 14, background: 'var(--teal-50)', borderRadius: 'var(--radius-sm)', gap: 10 }}>
+          <div className="stack" style={{ padding: 14, background: 'var(--brand-50)', borderRadius: 'var(--radius-sm)', gap: 10 }}>
             <div className="row-between">
               <strong className="small">Send the report directly (optional)</strong>
               <button type="button" className="btn btn-ghost btn-sm" onClick={clearContact}><X size={15} /> Remove</button>
@@ -482,7 +482,7 @@ export default function FrontDesk() {
                 <input className="input" style={{ maxWidth: 200 }} value={phone} inputMode="numeric" placeholder="10-digit mobile" autoFocus
                   onChange={(e) => changePhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (phone.length === 10) find(e) } }} />
-                <button type="button" className="btn btn-teal btn-sm" disabled={phone.length !== 10 || lookup.found} onClick={find}>
+                <button type="button" className="btn btn-brand btn-sm" disabled={phone.length !== 10 || lookup.found} onClick={find}>
                   <Search size={15} /> Find returning customer
                 </button>
               </div>
@@ -533,7 +533,7 @@ export default function FrontDesk() {
                 <strong>{fmtDateTime(Date.now() + maxTat * 3600 * 1000)}</strong></div>
             )}
             <label className="row" style={{ marginTop: 10, gap: 8 }}>
-              <input type="checkbox" checked={paid} onChange={(e) => setPaid(e.target.checked)} style={{ accentColor: 'var(--teal-600)', width: 18, height: 18 }} />
+              <input type="checkbox" checked={paid} onChange={(e) => setPaid(e.target.checked)} style={{ accentColor: 'var(--brand-600)', width: 18, height: 18 }} />
               Payment received at the counter (cash / UPI / card)
             </label>
             <ErrorBox error={error} />

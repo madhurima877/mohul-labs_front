@@ -33,7 +33,7 @@ export default function Home() {
         <div className="container hero-grid">
           <div>
             <span className="eyebrow">Pathology lab + dental clinic</span>
-            <h1>Healthy body, healthy smile — <span style={{ color: 'var(--teal-600)' }}>one trusted place.</span></h1>
+            <h1>Healthy body, healthy smile — <span style={{ color: 'var(--brand-600)' }}>one trusted place.</span></h1>
             <p className="lead">
               Book blood tests with free home sample collection, get reports online, and see our dentists for
               everything from a check-up to a root canal.
@@ -53,7 +53,7 @@ export default function Home() {
             <h3>What would you like to do?</h3>
             <div className="split-cta" style={{ marginTop: 12 }}>
               <Link to="/tests">
-                <span className="icon-bubble blue"><FlaskConical size={22} /></span>
+                <span className="icon-bubble accent"><FlaskConical size={22} /></span>
                 <span><strong>Book a lab test</strong><small>Blood, urine & more — at home or at a centre</small></span>
                 <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--muted)' }} />
               </Link>
@@ -68,7 +68,7 @@ export default function Home() {
                 <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--muted)' }} />
               </Link>
               <Link to="/account/bookings">
-                <span className="icon-bubble blue"><FileText size={22} /></span>
+                <span className="icon-bubble accent"><FileText size={22} /></span>
                 <span><strong>Download reports</strong><small>Track your booking status</small></span>
                 <ArrowRight size={18} style={{ marginLeft: 'auto', color: 'var(--muted)' }} />
               </Link>
@@ -138,7 +138,7 @@ export default function Home() {
                 <p className="muted small">{s.description}</p>
                 <div className="row-between">
                   <span className="price">{rupees(s.price_paise)}</span>
-                  <Link to={`/dental/book?service=${s.code}`} className="btn btn-teal btn-sm">Book</Link>
+                  <Link to={`/dental/book?service=${s.code}`} className="btn btn-brand btn-sm">Book</Link>
                 </div>
               </div>
             ))}
@@ -162,7 +162,7 @@ export default function Home() {
         <div className="container">
           <div className="grid grid-3">
             <div className="feature"><span className="icon-bubble"><Syringe size={22} /></span><div><h3>Safe, single-use kits</h3><p>Sealed needles and tubes opened in front of you.</p></div></div>
-            <div className="feature"><span className="icon-bubble blue"><CalendarClock size={22} /></span><div><h3>Slots that fit your day</h3><p>Early-morning collections for fasting tests, evening dental chairs.</p></div></div>
+            <div className="feature"><span className="icon-bubble accent"><CalendarClock size={22} /></span><div><h3>Slots that fit your day</h3><p>Early-morning collections for fasting tests, evening dental chairs.</p></div></div>
             <div className="feature"><span className="icon-bubble"><Stethoscope size={22} /></span><div><h3>Reviewed reports</h3><p>Out-of-range values are clearly flagged for your doctor.</p></div></div>
           </div>
         </div>

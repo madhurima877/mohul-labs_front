@@ -116,7 +116,7 @@ export default function Checkout() {
             <div className="grid grid-2" style={{ gap: 10 }}>
               {(patients.data || []).map((p) => (
                 <button key={p.id} className={`option-card ${selected.includes(p.id) ? 'selected' : ''}`} onClick={() => togglePatient(p.id)}>
-                  <input type="checkbox" readOnly checked={selected.includes(p.id)} style={{ marginTop: 4, accentColor: 'var(--teal-600)' }} />
+                  <input type="checkbox" readOnly checked={selected.includes(p.id)} style={{ marginTop: 4, accentColor: 'var(--brand-600)' }} />
                   <div><strong>{p.name}</strong><small>{p.relation} · {p.gender} · {age(p.dob)} yrs</small></div>
                 </button>
               ))}
@@ -127,11 +127,11 @@ export default function Checkout() {
             <h3>2. Where should we collect the sample?</h3>
             <div className="grid grid-2" style={{ gap: 10, marginTop: 10 }}>
               <button className={`option-card ${mode === 'home' ? 'selected' : ''}`} onClick={() => setMode('home')}>
-                <HomeIcon size={22} color="var(--teal-600)" />
+                <HomeIcon size={22} color="var(--brand-600)" />
                 <div><strong>Home collection</strong><small>{subtotal >= FREE_HOME_MIN ? 'Free for this order' : `${rupees(HOME_FEE)}, free on ${rupees(FREE_HOME_MIN)}+`}</small></div>
               </button>
               <button className={`option-card ${mode === 'lab_visit' ? 'selected' : ''}`} onClick={() => setMode('lab_visit')}>
-                <Building2 size={22} color="var(--blue-600)" />
+                <Building2 size={22} color="var(--accent-600)" />
                 <div><strong>Visit a centre</strong><small>Walk in at your slot, no extra charge</small></div>
               </button>
             </div>
@@ -143,7 +143,7 @@ export default function Checkout() {
                 {(addresses.data || []).length === 0 && <Alert kind="info">Add the address where our phlebotomist should come.</Alert>}
                 {(addresses.data || []).map((a) => (
                   <button key={a.id} className={`option-card ${addressId === a.id ? 'selected' : ''}`} onClick={() => setAddressId(a.id)}>
-                    <MapPin size={18} color="var(--teal-600)" />
+                    <MapPin size={18} color="var(--brand-600)" />
                     <div><strong>{a.line1}</strong><small>{[a.line2, a.landmark, a.city, a.pincode].filter(Boolean).join(', ')}</small></div>
                   </button>
                 ))}
@@ -157,7 +157,7 @@ export default function Checkout() {
                 <strong>Choose a centre</strong>
                 {(labs.data || []).map((l) => (
                   <button key={l.id} className={`option-card ${labId === l.id ? 'selected' : ''}`} onClick={() => setLabId(l.id)}>
-                    <Building2 size={18} color="var(--blue-600)" />
+                    <Building2 size={18} color="var(--accent-600)" />
                     <div><strong>{l.name}</strong><small>{l.address}, {l.city} {l.pincode}</small></div>
                   </button>
                 ))}
@@ -198,10 +198,10 @@ export default function Checkout() {
             <h3>4. Payment</h3>
             <div className="grid grid-2" style={{ gap: 10, marginTop: 10 }}>
               <button className={`option-card ${payment === 'online' ? 'selected' : ''}`} onClick={() => setPayment('online')}>
-                <CreditCard size={22} color="var(--teal-600)" /><div><strong>Pay online now</strong><small>UPI, cards, net banking</small></div>
+                <CreditCard size={22} color="var(--brand-600)" /><div><strong>Pay online now</strong><small>UPI, cards, net banking</small></div>
               </button>
               <button className={`option-card ${payment === 'cash' ? 'selected' : ''}`} onClick={() => setPayment('cash')}>
-                <Wallet size={22} color="var(--blue-600)" /><div><strong>Pay at collection</strong><small>Cash or UPI to the phlebotomist</small></div>
+                <Wallet size={22} color="var(--accent-600)" /><div><strong>Pay at collection</strong><small>Cash or UPI to the phlebotomist</small></div>
               </button>
             </div>
           </div>
